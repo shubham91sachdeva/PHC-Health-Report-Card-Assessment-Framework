@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHC — Health Report Card & Assessment Framework</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --navy:#0F2D5E;--teal:#0A7C6E;--gold:#C9951A;--rose:#B03060;
+  --sage:#2E6E45;--gray:#6B7280;--dgray:#374151;--border:#D1D5DB;
+  --light:#F7F9FC;--lgray:#E8EDF5;--ink:#0D1117;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--light);color:var(--ink);}
+.wrap{max-width:1000px;margin:0 auto;padding:0 40px 60px;}
+.hero{background:linear-gradient(135deg,var(--navy),#1a4a8a);padding:40px;color:#fff;margin-bottom:36px;}
+.hero .vtag{background:rgba(255,255,255,0.15);display:inline-block;padding:3px 12px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:12px;}
+.hero h1{font-size:28px;font-weight:800;margin-bottom:8px;}
+.hero p{color:rgba(255,255,255,.78);font-size:13.5px;max-width:700px;line-height:1.7;}
+h2{font-size:20px;font-weight:800;color:var(--navy);margin:34px 0 6px;}
+h3{font-size:15px;font-weight:700;color:var(--navy);margin:18px 0 8px;}
+p{font-size:13.5px;line-height:1.75;color:var(--dgray);margin-bottom:10px;}
+.section-tag{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal);}
+.tw{overflow-x:auto;margin:14px 0 24px;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff;border-radius:10px;overflow:hidden;}
+th{background:var(--navy);color:#fff;padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.3px;}
+td{padding:9px 13px;border-bottom:1px solid var(--border);color:var(--dgray);vertical-align:top;line-height:1.55;}
+tr:nth-child(even) td{background:var(--light);}
+.freq{display:inline-block;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;}
+.freq.termly{background:#DBEAFE;color:#1E40AF;}
+.freq.monthly{background:#D1FAE5;color:#065F46;}
+.freq.quarterly{background:#FEF3C7;color:#92400E;}
+.freq.annual{background:#FCE7F3;color:#9D174D;}
+.co{border-radius:11px;padding:16px 20px;margin:16px 0;border-left:4px solid;}
+.co.info{background:#EFF6FF;border-color:#3B82F6;}
+.co.warn{background:#FFFBEB;border-color:var(--gold);}
+.co.ok{background:#F0FDF4;border-color:var(--sage);}
+.co h5{font-size:12.5px;font-weight:700;margin-bottom:5px;}
+.co.info h5{color:#1E40AF;}.co.warn h5{color:#92400E;}.co.ok h5{color:var(--sage);}
+.co p{font-size:12.5px;margin-bottom:0;}
+.card-template{background:#fff;border:2px solid var(--navy);border-radius:14px;padding:0;margin:16px 0;overflow:hidden;}
+.ct-head{background:var(--navy);color:#fff;padding:16px 22px;}
+.ct-head h4{font-size:15px;font-weight:800;}
+.ct-head p{color:rgba(255,255,255,.7);font-size:11.5px;margin:2px 0 0;}
+.ct-body{padding:20px 22px;}
+.ct-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.ct-metric{background:var(--light);border-radius:9px;padding:11px 13px;}
+.ct-metric .ml{font-size:9px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;}
+.ct-metric .mv{font-size:14px;font-weight:800;color:var(--navy);margin-top:2px;}
+.ct-metric .mt{font-size:10px;color:var(--sage);margin-top:2px;}
+.ct-metric .mt.flag{color:var(--rose);}
+.ct-metric .mt.watch{color:#92400E;}
+.suggestion-box{background:#F0FDF4;border-radius:9px;padding:13px 16px;}
+.suggestion-box .sb-head{font-size:10.5px;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.suggestion-box ul{padding-left:16px;}
+.suggestion-box li{font-size:12px;color:var(--dgray);margin-bottom:4px;line-height:1.5;}
+.flow-steps{display:flex;flex-wrap:wrap;gap:0;align-items:center;margin:16px 0;}
+.fstep{background:#fff;border:1.5px solid var(--navy);border-radius:9px;padding:10px 15px;font-size:11.5px;font-weight:700;color:var(--navy);text-align:center;flex:1;min-width:140px;}
+.farrow{padding:0 8px;color:var(--navy);font-weight:800;font-size:16px;}
+.privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.priv-card{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid var(--border);}
+.priv-card h5{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:5px;}
+.priv-card p{font-size:11.5px;margin-bottom:0;}
+@media(max-width:800px){.wrap{padding:0 20px 40px;}.hero{padding:24px;}.ct-grid{grid-template-columns:1fr;}.privacy-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="vtag">PROGRESSIVE HEALTH CLUB · ASSESSMENT FRAMEWORK · v1.0</span>
+  <h1>Health Report Card & Assessment Framework</h1>
+  <p>What gets measured, how often, by whom, and how it turns into a per-student report with real suggestions a parent can act on — not just a spreadsheet of numbers.</p>
+</div>
+
+<div class="wrap">
+
+  <p class="section-tag">Overview</p>
+  <h2>How This Fits the Year</h2>
+  <p>The 40-week curriculum carries three fixed screening checkpoints — baseline (Week 1), midterm (Week 20), year-end (Week 39–40) — for BMI and physical measures. Around those, a set of lighter-touch metrics run monthly or quarterly through student self-report and teacher observation. Everything rolls up into one Health Report Card per student, issued at three points in the year and walked through with parents at the matching Monthly Parent & Grandparent Virtual Meet.</p>
+
+  <p class="section-tag">Metrics Tracked</p>
+  <h2>What Gets Measured, and How Often</h2>
+  <div class="tw"><table>
+    <tr><th>Category</th><th>Specific Metric</th><th>Frequency</th><th>Measured By</th><th>Method</th></tr>
+    <tr><td><strong>Growth</strong></td><td>Height, Weight, BMI (age percentile)</td><td><span class="freq termly">3x/Year</span></td><td>School Nurse / Paediatrician</td><td>In-person measurement, Weeks 1 / 20 / 39–40</td></tr>
+    <tr><td><strong>Vision & Hearing</strong></td><td>Basic vision chart, hearing screen</td><td><span class="freq annual">1x/Year</span></td><td>Paediatrician / Optometrist (camp)</td><td>Annual health camp, bundled with midterm checkpoint</td></tr>
+    <tr><td><strong>Dental</strong></td><td>Cavity count, gum health, plaque score</td><td><span class="freq annual">1x/Year</span></td><td>Dentist (camp)</td><td>Annual dental camp — also feeds the Week 4 Plaque Lab</td></tr>
+    <tr><td><strong>Physical Fitness</strong></td><td>Push-up count, sit-and-reach flexibility, timed run</td><td><span class="freq termly">2x/Year</span></td><td>Fitness Trainer</td><td>Baseline (Week 1) + re-test (Week 39, Category 2 mainly)</td></tr>
+    <tr><td><strong>Posture</strong></td><td>Basic postural screen (schoolbag load, screen posture)</td><td><span class="freq annual">1x/Year</span></td><td>Fitness Trainer / Physiotherapist</td><td>Visual screen during the fitness re-test</td></tr>
+    <tr><td><strong>Haemoglobin / Anaemia</strong></td><td>Simple on-site haemoglobin check, esp. girls Class 8+</td><td><span class="freq annual">1x/Year</span></td><td>Paediatrician (camp)</td><td>Annual camp, finger-prick test with parent consent</td></tr>
+    <tr><td><strong>Hygiene & Sleep</strong></td><td>Self-reported sleep hours, hygiene habit checklist</td><td><span class="freq monthly">Monthly</span></td><td>Student self-report</td><td>1-minute PHC app / paper log at session close</td></tr>
+    <tr><td><strong>Nutrition Habits</strong></td><td>Protein Meter log, Sugar/Ingredient Board engagement</td><td><span class="freq monthly">Monthly</span></td><td>Student self-report + teacher tally</td><td>Running log carried from the curriculum's own trackers</td></tr>
+    <tr><td><strong>Mental Wellness</strong></td><td>Simple mood/stress self-check (age-appropriate scale)</td><td><span class="freq quarterly">Quarterly</span></td><td>Student self-report, reviewed by counsellor</td><td>Anonymous-to-peers, confidential-to-counsellor short form</td></tr>
+    <tr><td><strong>Menstrual Health</strong> (girls)</td><td>Cycle regularity check-in, pain flag</td><td><span class="freq quarterly">Quarterly</span></td><td>Confidential self-report to female facilitator</td><td>Private form, never shared in the general report without consent</td></tr>
+  </table></div>
+
+  <div class="co info">
+    <h5>Why Different Frequencies for Different Things</h5>
+    <p>BMI and physical measures change slowly and need in-person tools, so 2–3 checks a year are enough and keep the camp burden manageable for a school. Habits (sleep, nutrition, hygiene) change week to week, so they're tracked monthly through the curriculum's own activities rather than a separate assessment — no extra classroom time needed. Mental wellness and menstrual health sit on a quarterly, confidentiality-first cadence deliberately — frequent enough to catch a problem early, infrequent enough to never feel like surveillance.</p>
+  </div>
+
+  <p class="section-tag">Data Flow</p>
+  <h2>From Measurement to Report Card</h2>
+  <div class="flow-steps">
+    <div class="fstep">1. Checkpoint / Monthly Log</div><div class="farrow">→</div>
+    <div class="fstep">2. PHC App or Paper Sheet</div><div class="farrow">→</div>
+    <div class="fstep">3. Rule-Based Suggestion Engine</div><div class="farrow">→</div>
+    <div class="fstep">4. Report Card Generated</div><div class="farrow">→</div>
+    <div class="fstep">5. Walked Through at Parent Meet</div>
+  </div>
+  <p>Camp results and monthly logs are entered against each student's PHC ID (paper form in Year 1 pilot schools; PHC app from Year 2). A simple rule-based lookup — not a diagnosis, just a plain-English nudge — turns each metric into one suggestion line (see below). The report card is generated at the same three points as the screening checkpoints and shared with parents at the matching Monthly Meet, with a 1:1 sign-up slot offered for anything flagged.</p>
+
+  <p class="section-tag">Sample Output</p>
+  <h2>What a Report Card Actually Looks Like</h2>
+  <div class="card-template">
+    <div class="ct-head"><h4>PHC Health Report Card — Midterm · Week 20</h4><p>Student: [Name] · Class 6 · Category 1 (Basic)</p></div>
+    <div class="ct-body">
+      <div class="ct-grid">
+        <div class="ct-metric"><div class="ml">BMI</div><div class="mv">17.2 (Healthy range)</div><div class="mt">On track since baseline</div></div>
+        <div class="ct-metric"><div class="ml">Dental</div><div class="mv">2 cavities flagged</div><div class="mt flag">Needs follow-up</div></div>
+        <div class="ct-metric"><div class="ml">Fitness</div><div class="mv">Improved 15% vs Week 1</div><div class="mt">Strong progress</div></div>
+        <div class="ct-metric"><div class="ml">Sleep (avg)</div><div class="mv">6.5 hrs/night</div><div class="mt watch">Below recommended 9–11 hrs</div></div>
+        <div class="ct-metric"><div class="ml">Nutrition Log</div><div class="mv">Protein target met 4/7 days</div><div class="mt">Good, room to grow</div></div>
+        <div class="ct-metric"><div class="ml">Mental Wellness</div><div class="mv">Self-reported: settled</div><div class="mt">No flags this quarter</div></div>
+      </div>
+      <div class="suggestion-box">
+        <div class="sb-head">What This Means — Suggestions for Home</div>
+        <ul>
+          <li>Book a dental follow-up within 4 weeks — the 2 flagged cavities are early-stage and simple to treat now.</li>
+          <li>Aim for lights-out 45 minutes earlier — even 1 extra hour of sleep measurably improves focus at this age.</li>
+          <li>Keep going with the Protein Meter — try adding one more protein-rich item (egg, paneer, sprouts) on the 3 lower days.</li>
+          <li>Fitness trend is genuinely strong — no action needed, just keep up the weekly PHC circuit.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-tag">Suggestion Logic</p>
+  <h2>How a Number Becomes a Suggestion</h2>
+  <div class="tw"><table>
+    <tr><th>Metric</th><th>Result Band</th><th>Auto-Generated Suggestion</th></tr>
+    <tr><td rowspan="3">BMI (age percentile)</td><td>Below 5th percentile</td><td>Flag for paediatrician review — possible undernutrition, schedule a check-in.</td></tr>
+    <tr><td>5th–85th percentile</td><td>Healthy range — reinforce current habits, no change needed.</td></tr>
+    <tr><td>Above 85th percentile</td><td>Gentle nudge on movement + portion awareness — never framed as weight loss for a child; framed as habit-building.</td></tr>
+    <tr><td rowspan="2">Sleep (self-reported avg)</td><td>Below 8 hrs (this age group)</td><td>Suggest an earlier wind-down routine; flag screen use before bed.</td></tr>
+    <tr><td>8+ hrs</td><td>On track — no action needed.</td></tr>
+    <tr><td rowspan="2">Dental Camp</td><td>Cavity(s) found</td><td>Direct referral note + suggested follow-up window (within 4–6 weeks).</td></tr>
+    <tr><td>Clear</td><td>Reinforce current brushing routine.</td></tr>
+    <tr><td rowspan="2">Mental Wellness Self-Check</td><td>Any flag raised</td><td>Routed confidentially to the school counsellor first — never auto-shared with parents until the counsellor has spoken with the student.</td></tr>
+    <tr><td>No flag</td><td>No line item shown — silence here is normal, not a gap in the report.</td></tr>
+  </table></div>
+
+  <div class="co warn">
+    <h5>These Are Suggestions, Not Diagnoses</h5>
+    <p>Every line on the card is a plain-English nudge generated from a simple rule, not a clinical judgement. Anything genuinely concerning (BMI extremes, dental issues, a mental-health flag) routes to the relevant expert for a real assessment before it ever reaches a parent as an action item.</p>
+  </div>
+
+  <p class="section-tag">Privacy</p>
+  <h2>What Stays Confidential</h2>
+  <div class="privacy-grid">
+    <div class="priv-card"><h5>Mental Wellness Data</h5><p>Seen only by the school counsellor and the student. Never appears on the general report card unless the student and counsellor agree it should be shared with parents.</p></div>
+    <div class="priv-card"><h5>Menstrual Health Data</h5><p>Collected only by a female facilitator, stored separately from the general record, shared with parents only at the student's or facilitator's discretion.</p></div>
+    <div class="priv-card"><h5>Haemoglobin / Medical Camp Data</h5><p>Finger-prick or clinical checks require prior written parent consent per student — opt-out is always available with no penalty.</p></div>
+    <div class="priv-card"><h5>Data Storage</h5><p>Paper forms in Year 1 pilot schools; from Year 2, the PHC app stores health data separately from general school records, access-restricted to the school nurse, counsellor, and the student's own parents.</p></div>
+  </div>
+
+  <div class="co ok">
+    <h5>Where This Plugs Into the Rest of PHC</h5>
+    <p>Screening checkpoints live inside the 40-week curriculum (Week 1 / Week 20 / Week 39–40 in both category tracks). Results are walked through with families at the Monthly Parent & Grandparent Virtual Meet track — specifically the November and March sessions, which are built around the report card review. See <em>phc_40_week_curriculum.html</em> for the session-level detail and <em>phc_master_plan.html</em> for the operational rollout.</p>
+  </div>
+
+</div>
+
+<div style="padding:26px 40px;text-align:center;color:var(--gray);font-size:11.5px;border-top:1px solid var(--border);margin-top:20px;">
+  <p style="font-weight:700;color:var(--navy);font-size:13.5px;margin-bottom:4px;">Progressive Health Club by Sakshi Malik — Health Report Card & Assessment Framework</p>
+  <p>Well Begun. Well Lived. &nbsp;·&nbsp; phcsakshimalik.com &nbsp;·&nbsp; v1.0 &nbsp;·&nbsp; Internal — Confidential</p>
+</div>
+
+</body>
+</html>
